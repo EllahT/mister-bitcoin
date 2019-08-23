@@ -1,0 +1,21 @@
+.contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #5893d4;
+  padding: 10px 8px;
+  margin: 5px 0;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+
+.contact-item:hover {
+  border-top: 1px solid #9a9b94;
+  border-bottom: 1px solid #9a9b94;
+}

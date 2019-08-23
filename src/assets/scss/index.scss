@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "titillium";
+  src: url("../fonts/TitilliumWeb-Light.ttf");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #5893d4;
+  color: #070d59;
+  font-family: "titillium";
+}
