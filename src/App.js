@@ -14,6 +14,7 @@ import "./assets/scss/app.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import HomePage from "./pages/HomePage/HomePage";
+import SignupPage from "./pages/SignupPage/SignupPage";
 import ContactApp from "./pages/ContactAppPage/ContactApp";
 import ContactDetails from "./pages/ContactDetailsPage/ContactDetails";
 import ContactEdit from "./pages/ContactEditPage/ContactEdit";
@@ -47,6 +48,7 @@ class App extends Component {
 
           <Switch>
             <Route path={URLS.HOME} exact component={HomePage} />
+            <Route path={URLS.SIGNUP} exact component={SignupPage} />
             <Route path={URLS.CONTACTS.LIST} exact component={ContactApp} />
             <Route path={URLS.CONTACTS.ADD} key="add" component={ContactEdit} />
             <Route

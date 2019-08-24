@@ -6,19 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ContactApp.scss";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import ContactList from "../../components/ContactList/ContactList";
-import * as contactsActions from "../../store/actions/contactsActions/ContactsActions";
+import contactsActions from "../../store/actions/contactsActions/contactsActions";
 import { bindActionCreators } from "redux";
 import { URLS } from "../../utils/consts";
 
 class ContactApp extends Component {
   componentDidMount() {
     if (!this.props.isContactsLoaded) {
-      this.props.actions.fetchContacts();
+      this.props.actions.loadContacts();
     }
   }
 
   onSearchTermChange = async searchTerm => {
-    await this.props.actions.fetchContacts(searchTerm);
+    await this.props.actions.loadContacts(searchTerm);
   };
 
   onContactDelete = async id => {
@@ -60,7 +60,8 @@ class ContactApp extends Component {
 ContactApp.propTypes = {
   isContactsLoaded: PropTypes.bool.isRequired,
   contacts: PropTypes.array.isRequired,
-  contactsSearchTerm: PropTypes.string
+  contactsSearchTerm: PropTypes.string,
+  actions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
@@ -78,7 +79,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      fetchContacts: contactsActions.fetchContacts,
+      loadContacts: contactsActions.loadContacts,
       deleteContact: contactsActions.deleteContact
     },
     dispatch

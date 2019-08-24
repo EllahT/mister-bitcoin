@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import ContactService from "../../services/ContactService";
+import contactService from "../../services/contactService";
 
 import "./ContactEdit.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,16 +13,16 @@ export default class ContactEdit extends Component {
   };
 
   onDelete = async () => {
-    await ContactService.deleteContact(this.state.contact.id);
+    await contactService.deleteContact(this.state.contact.id);
     this.props.history.push(URLS.CONTACTS.LIST);
   };
 
   async componentDidMount() {
     const { id } = this.props.match.params;
     if (id) {
-      const contact = await ContactService.getContactById(id);
+      const contact = await contactService.getContactById(id);
       this.setState({ contact });
-    } else this.setState({ contact: ContactService.getEmptyContact() });
+    } else this.setState({ contact: contactService.getEmptyContact() });
   }
 
   handleChange = e => {
@@ -33,7 +33,7 @@ export default class ContactEdit extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    await ContactService.saveContact(this.state.contact);
+    await contactService.saveContact(this.state.contact);
     const { history } = this.props;
     history.push(URLS.CONTACTS.LIST);
   };
@@ -48,7 +48,7 @@ export default class ContactEdit extends Component {
               <FontAwesomeIcon icon="chevron-left" />
             </Link>
             <button
-              className="delete-btn"
+              className="icon-btn"
               onClick={() => {
                 this.onDelete();
               }}
@@ -58,7 +58,7 @@ export default class ContactEdit extends Component {
           </div>
           <form onSubmit={this.handleSubmit}>
             <div>
-              <FontAwesomeIcon icon="user" />{" "}
+              <FontAwesomeIcon icon="user" />
               <input
                 type="text"
                 name="name"
@@ -67,7 +67,7 @@ export default class ContactEdit extends Component {
               />
             </div>
             <div>
-              <FontAwesomeIcon icon="at" />{" "}
+              <FontAwesomeIcon icon="at" />
               <input
                 type="text"
                 name="email"
@@ -76,7 +76,7 @@ export default class ContactEdit extends Component {
               />
             </div>
             <div>
-              <FontAwesomeIcon icon="phone" />{" "}
+              <FontAwesomeIcon icon="phone" />
               <input
                 type="text"
                 name="phone"
@@ -84,7 +84,7 @@ export default class ContactEdit extends Component {
                 value={this.state.contact.phone}
               />
             </div>
-            <button>
+            <button className="icon-btn">
               <FontAwesomeIcon icon="save" />
             </button>
           </form>

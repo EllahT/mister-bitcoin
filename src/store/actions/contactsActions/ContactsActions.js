@@ -1,24 +1,24 @@
 import types from "./contactsActionTypes";
-import ContactService from "../../../services/ContactService";
+import contactService from "../../../services/contactService";
 
-const setContactsSearchTerm = searchTerm => ({
+const _setContactsSearchTerm = searchTerm => ({
   type: types.SET_CONTACTS_SEARCH_TERM,
   searchTerm
 });
 
-const setContacts = (contacts, isFiltered) => ({
+const _setContacts = (contacts, isFiltered) => ({
   type: types.SET_CONTACTS,
   contacts,
   isFiltered
 });
 
-export const fetchContacts = (searchTerm = "") => {
+const loadContacts = (searchTerm = "") => {
   return async dispatch => {
     try {
-      dispatch(setContacts(null, !!searchTerm));
-      const res = await ContactService.getContacts(searchTerm);
-      dispatch(setContacts(res, !!searchTerm));
-      dispatch(setContactsSearchTerm(searchTerm));
+      dispatch(_setContacts(null, !!searchTerm));
+      const res = await contactService.getContacts(searchTerm);
+      dispatch(_setContacts(res, !!searchTerm));
+      dispatch(_setContactsSearchTerm(searchTerm));
       return res;
     } catch (err) {
       throw err;
@@ -26,11 +26,16 @@ export const fetchContacts = (searchTerm = "") => {
   };
 };
 
-export const deleteContact = id => async dispatch => {
+const deleteContact = id => async dispatch => {
   try {
-    await ContactService.deleteContact(id);
+    await contactService.deleteContact(id);
     dispatch({ type: types.DELETE_CONTACT, id });
   } catch (err) {
     throw err;
   }
+};
+
+export default {
+  loadContacts,
+  deleteContact
 };

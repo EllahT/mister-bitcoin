@@ -1,9 +1,7 @@
 import types from "../actions/contactsActions/contactsActionTypes";
+import initialState from "../initialState";
 
-export default function contactReducer(
-  state = { contacts: null, filteredContacts: null, searchTerm: "" },
-  action
-) {
+export default (state = initialState.contacts, action) => {
   switch (action.type) {
     case types.SET_CONTACTS:
       if (action.isFiltered) {
@@ -24,4 +22,4 @@ export default function contactReducer(
     default:
       return state;
   }
-}
+};

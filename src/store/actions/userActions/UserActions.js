@@ -1,15 +1,19 @@
 import types from "./userActionTypes";
-import userService from "../../../services/UserService";
+import userService from "../../../services/userService";
 
-const setUser = user => ({ type: types.SET_USER, user });
+const _setUser = user => ({ type: types.SET_USER, user });
 
-export const loadUser = () => {
+const loadUser = () => {
   return async dispatch => {
     try {
       const user = await userService.loadUser();
-      return dispatch(setUser(user));
+      return dispatch(_setUser(user));
     } catch (err) {
       throw err;
     }
   };
+};
+
+export default {
+  loadUser
 };

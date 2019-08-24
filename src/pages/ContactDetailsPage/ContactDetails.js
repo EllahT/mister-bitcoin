@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ContactService from "../../services/ContactService";
+import contactService from "../../services/contactService";
 
 import "./ContactDetails.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,12 +15,12 @@ export default class ContactDetails extends Component {
 
   async componentDidMount() {
     const { id } = this.props.match.params;
-    const contact = await ContactService.getContactById(id);
+    const contact = await contactService.getContactById(id);
     this.setState({ contact });
   }
 
   onDelete = async () => {
-    await ContactService.deleteContact(this.state.contact.id);
+    await contactService.deleteContact(this.state.contact.id);
     this.props.history.push(URLS.CONTACTS.LIST);
   };
 
@@ -37,7 +37,7 @@ export default class ContactDetails extends Component {
               <FontAwesomeIcon icon="edit" />
             </Link>
             <button
-              className="delete-btn"
+              className="icon-btn"
               onClick={() => {
                 this.onDelete();
               }}

@@ -51,7 +51,7 @@ button {
 }
 
 button {
-  background-color: transparent;
+  background-color: lighten($brand-background, 12%);
   border: none;
   outline: none;
   color: inherit;
@@ -62,5 +62,11 @@ button {
 
   &:hover {
     color: $brand-text-inverted;
+  }
+
+  &.icon-btn {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
   }
 }

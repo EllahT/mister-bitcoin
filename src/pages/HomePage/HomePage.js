@@ -3,8 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import * as userActions from "../../store/actions/userActions/UserActions";
-import BitcoinService from "../../services/BitcoinService";
+import userActions from "../../store/actions/userActions/userActions";
+import bitcoinActions from "../../store/actions/bitcoinActions/bitcoinActions";
 
 import "./HomePage.scss";
 
@@ -13,23 +13,21 @@ class HomePage extends Component {
 
   async componentDidMount() {
     this.props.actions.loadUser();
-    // this.props.actions.getCurrency(); // TODO
-    this.setState({ currency: await BitcoinService.getCurrency() });
+    this.props.actions.loadCurrency();
   }
   render() {
-    const { user } = this.props;
-
-    if (!user) return <section>Loading user details...</section>;
+    if (!this.props.user) return <section>Loading user details...</section>;
 
     return (
       <section>
-        <h1>Hello {user.name}</h1>
+        <h1>Hello {this.props.user.name}</h1>
         <h4>
-          <FontAwesomeIcon icon={["fab", "bitcoin"]} /> Coins: {user.coins}
+          <FontAwesomeIcon icon={["fab", "bitcoin"]} /> Coins:{" "}
+          {this.props.user.coins}
         </h4>
-        {this.state.currency !== null && (
+        {this.props.currency !== null && (
           <h4>
-            <FontAwesomeIcon icon={["fab", "btc"]} /> BTC: {this.state.currency}
+            <FontAwesomeIcon icon={["fab", "btc"]} /> BTC: {this.props.currency}
           </h4>
         )}
       </section>
@@ -38,13 +36,15 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user.user
+  user: state.user.user,
+  currency: state.bitcoin.currency
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      loadUser: userActions.loadUser
+      loadUser: userActions.loadUser,
+      loadCurrency: bitcoinActions.loadCurrency
     },
     dispatch
   )

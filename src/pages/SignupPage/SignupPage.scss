@@ -1,0 +1,12 @@
+.signup-form {
+  display: flex;
+  flex-direction: column;
+
+  input {
+    margin-bottom: 20px;
+  }
+
+  button {
+    align-self: center;
+  }
+}

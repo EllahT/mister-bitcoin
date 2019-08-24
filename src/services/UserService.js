@@ -13,3 +13,5 @@ function loadUser() {
     }, 500);
   });
 }
+
+function addUser() {}

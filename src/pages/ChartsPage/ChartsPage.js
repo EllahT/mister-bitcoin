@@ -1,35 +1,37 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import BitcoinSerivce from "../../services/BitcoinService";
+import bitcoinActions from "../../store/actions/bitcoinActions/bitcoinActions";
 
 import "./ChartsPage.scss";
 
 import ChartContainer from "../../components/ChartContainer/ChartContainer";
 
 class Charts extends Component {
-  state = {};
   async componentDidMount() {
-    const marketPrice = await BitcoinSerivce.getMarketPrice();
-    const confirmedTransactions = await BitcoinSerivce.getConfirmedTransactions();
-    this.setState({ marketPrice, confirmedTransactions });
+    await Promise.all([
+      this.props.actions.loadConfirmedTransactionsData(),
+      this.props.actions.loadMarketPriceData()
+    ]);
   }
   render() {
-    const { marketPrice, confirmedTransactions } = this.state;
+    console.log(this.props);
     return (
       <section className="charts-page">
         <h1>Charts</h1>
-        {marketPrice && (
+        {this.props.marketPriceData && (
           <ChartContainer
-            data={marketPrice}
+            data={this.props.marketPriceData}
             color="lightblue"
             title="Market Price"
             subTitle="Last 6 Monthes"
           />
         )}
-        {confirmedTransactions && (
+        {this.props.confirmedTransactionsData && (
           <ChartContainer
-            data={confirmedTransactions}
+            data={this.props.confirmedTransactionsData}
             color="orange"
             title="Confirmed Transactions"
             subTitle="Last 30 Days"
@@ -40,12 +42,29 @@ class Charts extends Component {
   }
 }
 
-const mapStateToProps = ({ UserReducer }) => {
-  const { user } = UserReducer;
-
-  return {
-    user
-  };
+Charts.propTypes = {
+  confirmedTransactionsData: PropTypes.array,
+  marketPriceData: PropTypes.array,
+  actions: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps)(Charts);
+const mapStateToProps = state => ({
+  marketPriceData: state.bitcoin.marketPricesData,
+  confirmedTransactionsData: state.bitcoin.confirmedTransactionsData
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      loadMarketPriceData: bitcoinActions.loadMarketPricesData,
+      loadConfirmedTransactionsData:
+        bitcoinActions.loadConfirmedTransactionsData
+    },
+    dispatch
+  )
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Charts);

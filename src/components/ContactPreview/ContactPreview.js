@@ -29,7 +29,7 @@ const ContactPreview = ({ contact, onDelete, history }) => {
           <FontAwesomeIcon icon="user-edit" />
         </Link>
         <button
-          className="delete-btn"
+          className="icon-btn"
           onClick={e => {
             e.stopPropagation();
             onDelete(contact._id);
