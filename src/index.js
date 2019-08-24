@@ -1,22 +1,21 @@
+/* eslint import/first: 0 */
 import React from "react";
 import ReactDOM from "react-dom";
-import thunk from "redux-thunk";
-import { createLogger } from "redux-logger";
-import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-
-import reducer from "./store/reducers";
-
+import configureStore from "./store/configureStore";
 import * as serviceWorker from "./serviceWorker";
+
+// Load fortawesome icons packages
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+library.add(fas, fab);
 
 import "./assets/scss/index.scss";
 import App from "./App";
 
-const middleware = [thunk];
-if (process.env.NODE_ENV !== "production") {
-  middleware.push(createLogger());
-}
-const store = createStore(reducer, applyMiddleware(...middleware));
+const store = configureStore();
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

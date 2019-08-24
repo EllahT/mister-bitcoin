@@ -1,25 +1,37 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Link, withRouter } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import utils from "../../utils/utils";
+import { URLS } from "../../utils/consts";
+
 import "./ContactPreview.scss";
 
-export default props => {
-  const { contact, onDelete } = props;
+const ContactPreview = ({ contact, onDelete, history }) => {
   return (
-    <li className="contact-item">
+    <li
+      className="contact-item"
+      onClick={() =>
+        history.push(
+          utils.formatURL(URLS.CONTACTS.DETAILS, { id: contact._id })
+        )
+      }
+    >
       <img src={`https://robohash.org/${contact._id}?set=set5`} alt="contact" />
       {contact.name}
+
       <div className="actions">
-        <Link to={`/contact/${contact._id}`}>
-          <FontAwesomeIcon icon="user" />
-        </Link>
-        <Link to={`/contact/edit/${contact._id}`}>
+        <Link
+          to={utils.formatURL(URLS.CONTACTS.EDIT, { id: contact._id })}
+          onClick={e => e.stopPropagation()}
+        >
           <FontAwesomeIcon icon="user-edit" />
         </Link>
         <button
           className="delete-btn"
-          onClick={() => {
+          onClick={e => {
+            e.stopPropagation();
             onDelete(contact._id);
           }}
         >
@@ -29,3 +41,11 @@ export default props => {
     </li>
   );
 };
+
+ContactPreview.propTypes = {
+  history: PropTypes.object.isRequired,
+  contact: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired
+};
+
+export default withRouter(ContactPreview);

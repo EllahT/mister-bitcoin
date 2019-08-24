@@ -6,6 +6,8 @@ import "./ContactDetails.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Link } from "react-router-dom";
+import { URLS } from "../../utils/consts";
+import utils from "../../utils/utils";
 export default class ContactDetails extends Component {
   state = {
     contact: null
@@ -19,7 +21,7 @@ export default class ContactDetails extends Component {
 
   onDelete = async () => {
     await ContactService.deleteContact(this.state.contact.id);
-    this.props.history.push("/contact");
+    this.props.history.push(URLS.CONTACTS.LIST);
   };
 
   render() {
@@ -28,10 +30,10 @@ export default class ContactDetails extends Component {
       contact && (
         <section className="contact-details">
           <div className="actions">
-            <Link to="/contact">
+            <Link to={URLS.CONTACTS.LIST}>
               <FontAwesomeIcon icon="chevron-left" />
             </Link>
-            <Link to={`/contact/edit/${contact._id}`}>
+            <Link to={utils.formatURL(URLS.CONTACTS.EDIT, { id: contact._id })}>
               <FontAwesomeIcon icon="edit" />
             </Link>
             <button
@@ -49,11 +51,9 @@ export default class ContactDetails extends Component {
             alt="contact"
           />
           <h4>
-            {" "}
             <FontAwesomeIcon icon="at" /> {contact.email}
           </h4>
           <h4>
-            {" "}
             <FontAwesomeIcon icon="phone" /> {contact.phone}
           </h4>
         </section>

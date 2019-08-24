@@ -1,9 +1,9 @@
-import types from "../types";
+import types from "../actions/userActions/userActionTypes";
 
-export default function ContactReducer(state = { user: {} }, action) {
+export default function userReducer(state = { user: null }, action) {
   switch (action.type) {
-    case types.GET_USER:
-      return { ...state, user: action.data };
+    case types.SET_USER:
+      return { ...state, user: action.user };
     default:
       return state;
   }

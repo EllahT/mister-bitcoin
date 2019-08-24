@@ -11,9 +11,6 @@ import {
 
 import "./assets/scss/app.scss";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import HomePage from "./pages/HomePage/HomePage";
@@ -21,12 +18,9 @@ import ContactApp from "./pages/ContactAppPage/ContactApp";
 import ContactDetails from "./pages/ContactDetailsPage/ContactDetails";
 import ContactEdit from "./pages/ContactEditPage/ContactEdit";
 import Charts from "./pages/ChartsPage/ChartsPage";
-
-library.add(fas, fab);
+import { URLS } from "./utils/consts";
 
 class App extends Component {
-  goBack = () => {};
-
   render() {
     return (
       <Router>
@@ -34,28 +28,38 @@ class App extends Component {
           <nav>
             <ul className="main-nav">
               <li>
-                <NavLink exact to="/">
+                <NavLink exact to={URLS.HOME}>
                   <FontAwesomeIcon icon="home" />
                 </NavLink>
               </li>
               <li>
-                <NavLink exact to="/contact">
+                <NavLink exact to={URLS.CONTACTS.LIST}>
                   <FontAwesomeIcon icon="address-book" />
                 </NavLink>
               </li>
               <li>
-                <NavLink exact to="/charts">
+                <NavLink exact to={URLS.CHARTS}>
                   <FontAwesomeIcon icon="chart-line" />
                 </NavLink>
               </li>
             </ul>
           </nav>
+
           <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route exact path="/contact" component={ContactApp} />
-            <Route path="/contact/edit/:id?" component={ContactEdit} />
-            <Route path="/contact/:id" component={ContactDetails} />
-            <Route path="/charts" component={Charts} />
+            <Route path={URLS.HOME} exact component={HomePage} />
+            <Route path={URLS.CONTACTS.LIST} exact component={ContactApp} />
+            <Route path={URLS.CONTACTS.ADD} key="add" component={ContactEdit} />
+            <Route
+              path={URLS.CONTACTS.DETAILS}
+              exact
+              component={ContactDetails}
+            />
+            <Route
+              path={URLS.CONTACTS.EDIT}
+              key="edit"
+              component={ContactEdit}
+            />
+            <Route path={URLS.CHARTS} component={Charts} />
           </Switch>
         </div>
       </Router>

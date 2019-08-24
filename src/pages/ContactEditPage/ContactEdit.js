@@ -5,6 +5,7 @@ import ContactService from "../../services/ContactService";
 
 import "./ContactEdit.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { URLS } from "../../utils/consts";
 
 export default class ContactEdit extends Component {
   state = {
@@ -13,7 +14,7 @@ export default class ContactEdit extends Component {
 
   onDelete = async () => {
     await ContactService.deleteContact(this.state.contact.id);
-    this.props.history.push("/contact");
+    this.props.history.push(URLS.CONTACTS.LIST);
   };
 
   async componentDidMount() {
@@ -34,7 +35,7 @@ export default class ContactEdit extends Component {
     e.preventDefault();
     await ContactService.saveContact(this.state.contact);
     const { history } = this.props;
-    history.push("/contact");
+    history.push(URLS.CONTACTS.LIST);
   };
 
   render() {
@@ -43,7 +44,7 @@ export default class ContactEdit extends Component {
       contact && (
         <section className="contact-edit">
           <div className="actions">
-            <Link to="/contact">
+            <Link to={URLS.CONTACTS.LIST}>
               <FontAwesomeIcon icon="chevron-left" />
             </Link>
             <button

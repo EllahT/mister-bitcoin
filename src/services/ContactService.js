@@ -137,13 +137,15 @@ function sort(arr) {
   });
 }
 
-function getContacts(filterBy) {
+function getContacts(searchTerm) {
   return new Promise((resolve, reject) => {
-    var contactsToReturn = contacts;
-    if (filterBy && filterBy.term) {
-      contactsToReturn = filter(filterBy.term);
-    }
-    resolve(sort(contactsToReturn));
+    setTimeout(() => {
+      var contactsToReturn = contacts;
+      if (searchTerm) {
+        contactsToReturn = filter(searchTerm);
+      }
+      resolve(sort(contactsToReturn));
+    }, 500);
   });
 }
 

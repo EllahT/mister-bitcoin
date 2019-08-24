@@ -1,63 +1,13 @@
-a,
-a:visited {
-  text-decoration: none;
-  color: inherit;
-}
-
-a:hover {
-  color: #f7b633;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-header {
-  margin: 10px;
-}
-
-section {
-  margin: 10px;
-}
-
-input,
-select {
-  padding: 5px;
-  margin: 2px;
-}
-
-input,
-select,
-button {
-  font-family: inherit;
-  padding: 5px;
-}
-
-button {
-  background-color: transparent;
-  border: none;
-  outline: none;
-  color: inherit;
-  font-size: 1rem;
-  margin: 3px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  color: #f7b633;
-}
+@import "./colors.scss";
 
 .main-nav {
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  background-color: #f7b633;
+  background-color: $brand-text-inverted;
 
   li:hover a {
-    color: #5893d4;
+    color: $brand-background;
   }
 }
 
@@ -69,5 +19,7 @@ button:hover {
   button {
     margin: 5px;
     padding: 0px;
+    border-radius: none;
+    box-shadow: none;
   }
 }

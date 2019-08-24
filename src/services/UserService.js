@@ -1,11 +1,15 @@
 export default {
-  getUser
+  loadUser
 };
 
-function getUser() {
-  return Promise.resolve({
-    name: "Moshe Cohen",
-    coins: 100,
-    moves: []
+function loadUser() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        name: "Moshe Cohen",
+        coins: 100,
+        moves: []
+      });
+    }, 500);
   });
 }

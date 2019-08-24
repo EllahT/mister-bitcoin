@@ -1,67 +1,91 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ContactApp.scss";
-
-import ContactFilter from "../../components/ContactFilter/ContactFilter";
+import SearchBox from "../../components/SearchBox/SearchBox";
 import ContactList from "../../components/ContactList/ContactList";
-
-import { fetchContactsData } from "../../store/actions/ContactsActions";
-import ContactService from "../../services/ContactService";
+import * as contactsActions from "../../store/actions/contactsActions/ContactsActions";
+import { bindActionCreators } from "redux";
+import { URLS } from "../../utils/consts";
 
 class ContactApp extends Component {
-  state = {
-    filterBy: ""
-  };
-
-  async componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchContactsData());
+  componentDidMount() {
+    if (!this.props.isContactsLoaded) {
+      this.props.actions.fetchContacts();
+    }
   }
 
-  handleNameChange = async e => {
-    const {
-      target: { value }
-    } = e;
-    const { dispatch } = this.props;
-    await dispatch(fetchContactsData({ term: value }));
-    this.setState({ filterBy: value });
+  onSearchTermChange = async searchTerm => {
+    await this.props.actions.fetchContacts(searchTerm);
   };
-  handleDelete = async id => {
-    await ContactService.deleteContact(id);
+
+  onContactDelete = async id => {
+    await this.props.actions.deleteContact(id);
     console.log(this.props.contacts);
   };
-  render() {
-    const { contacts } = this.props;
-    return (
-      <React.Fragment>
-        <header>
-          <h1>Contacts</h1>
-        </header>
 
-        <ContactFilter
-          value={this.state.filterBy}
-          onFilterNameChange={this.handleNameChange}
-        />
-        <Link to="/contact/edit/" className="add-contact-link">
-          Add Contact
-        </Link>
-        {!contacts.length && <h1>Loading...</h1>}
-        {contacts.length > 0 && (
-          <ContactList contacts={contacts} onDelete={this.handleDelete} />
+  render() {
+    return (
+      <section className="contact-app">
+        <div className="top-bar">
+          <SearchBox
+            searchTerm={this.props.contactsSearchTerm}
+            onSearchTermChange={this.onSearchTermChange}
+            placeholder="Search a contact..."
+          />
+          <Link to={URLS.CONTACTS.ADD} className="add-contact-link">
+            <FontAwesomeIcon icon="user-plus" />
+          </Link>
+        </div>
+
+        {this.props.isContactsLoaded ? (
+          this.props.contacts.length > 0 ? (
+            <ContactList
+              contacts={this.props.contacts}
+              onDelete={this.onContactDelete}
+            />
+          ) : (
+            "No contacts found"
+          )
+        ) : (
+          "Loading..."
         )}
-      </React.Fragment>
+      </section>
     );
   }
 }
 
-const mapStateToProps = ({ ContactReducer }) => {
-  const { contacts } = ContactReducer;
+ContactApp.propTypes = {
+  isContactsLoaded: PropTypes.bool.isRequired,
+  contacts: PropTypes.array.isRequired,
+  contactsSearchTerm: PropTypes.string
+};
+
+const mapStateToProps = state => {
+  const contacts = state.contacts.searchTerm
+    ? state.contacts.filteredContacts
+    : state.contacts.contacts;
 
   return {
-    contacts
+    isContactsLoaded: contacts !== null,
+    contacts: contacts || [],
+    contactsSearchTerm: state.contacts.searchTerm
   };
 };
 
-export default connect(mapStateToProps)(ContactApp);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      fetchContacts: contactsActions.fetchContacts,
+      deleteContact: contactsActions.deleteContact
+    },
+    dispatch
+  )
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactApp);
