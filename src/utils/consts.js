@@ -7,5 +7,6 @@ export const URLS = {
     EDIT: "/contact/:id/edit"
   },
   CHARTS: "/charts",
-  SIGNUP: "/signup"
+  SIGNUP: "/signup",
+  LOGIN: "/login"
 };

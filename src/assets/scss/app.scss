@@ -3,11 +3,17 @@
 .main-nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
   background-color: $brand-text-inverted;
 
-  li:hover a {
+  li:hover a,
+  li:hover button {
     color: $brand-background;
+  }
+
+  button:hover {
+    color: inherit;
   }
 }
 

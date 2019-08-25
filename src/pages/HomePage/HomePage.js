@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,10 +10,8 @@ import bitcoinActions from "../../store/actions/bitcoinActions/bitcoinActions";
 import "./HomePage.scss";
 
 class HomePage extends Component {
-  state = { currency: null };
-
   async componentDidMount() {
-    this.props.actions.loadUser();
+    this.props.actions.loadLoggedUser();
     this.props.actions.loadCurrency();
   }
   render() {
@@ -20,20 +19,38 @@ class HomePage extends Component {
 
     return (
       <section>
-        <h1>Hello {this.props.user.name}</h1>
-        <h4>
-          <FontAwesomeIcon icon={["fab", "bitcoin"]} /> Coins:{" "}
-          {this.props.user.coins}
-        </h4>
-        {this.props.currency !== null && (
+        <header>
+          <h1>Hello {this.props.user.username}</h1>
           <h4>
-            <FontAwesomeIcon icon={["fab", "btc"]} /> BTC: {this.props.currency}
+            <FontAwesomeIcon icon={["fab", "bitcoin"]} /> Coins:{" "}
+            {this.props.user.coins}
           </h4>
-        )}
+          {this.props.currency !== null && (
+            <h4>
+              <FontAwesomeIcon icon={["fab", "btc"]} /> BTC:{" "}
+              {this.props.currency}
+            </h4>
+          )}
+        </header>
+
+        <main className="last-transcations">
+          <h1>Last transactions</h1>
+          <ul>
+            {this.props.user.transactions.map(transaction => (
+              <li>{JSON.stringify(transaction)}</li>
+            ))}
+          </ul>
+        </main>
       </section>
     );
   }
 }
+
+HomePage.propTypes = {
+  user: PropTypes.object,
+  currency: PropTypes.number,
+  actions: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
   user: state.user.user,
@@ -43,7 +60,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      loadUser: userActions.loadUser,
+      loadLoggedUser: userActions.loadLoggedUser,
       loadCurrency: bitcoinActions.loadCurrency
     },
     dispatch

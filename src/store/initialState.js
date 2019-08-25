@@ -1,6 +1,6 @@
 export default {
   contacts: { contacts: null, filteredContacts: null, searchTerm: "" },
-  users: { user: null },
+  users: { users: null, currUserId: null },
   bitcoin: {
     currency: null,
     confirmedTransactionsData: null,

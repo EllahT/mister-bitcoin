@@ -1,0 +1,10 @@
+@import "../../assets/scss/colors.scss";
+
+.last-transcations {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  background-color: darken($brand-background, 12%);
+}

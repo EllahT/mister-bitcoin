@@ -9,18 +9,18 @@ import swal from "sweetalert";
 import { URLS } from "../../utils/consts";
 import userActions from "../../store/actions/userActions/userActions";
 
-import "./SignupPage.scss";
+import "./LoginPage.scss";
 
-class Signup extends Component {
+class Login extends Component {
   state = { username: "" };
   onChangeInput = e => {
     this.setState({ username: e.target.value });
   };
 
-  onSignup = async () => {
+  onLogin = async () => {
     try {
-      await this.props.actions.signup(this.state.username);
-      swal("Welcome!", "Successfully signed up!", "success");
+      await this.props.actions.login(this.state.username);
+      swal("Welcome!", "Successfully logged in!", "success");
       this.setState({ username: "" });
     } catch (err) {
       swal("Had problems", err, "error");
@@ -28,33 +28,32 @@ class Signup extends Component {
   };
   render() {
     return (
-      <section className="signup-form">
-        <h1>Sign Up</h1>
+      <section className="login-form">
+        <h1>Login</h1>
         <input
           type="text"
           placeholder="Please enter your name..."
           value={this.state.username}
           onChange={this.onChangeInput}
           onKeyDown={e => {
-            if (e.keyCode === 13) this.onSignup();
+            if (e.keyCode === 13) this.onLogin();
           }}
         />
-        <button onClick={this.onSignup}>Sign up</button>
-
-        <Link to={URLS.LOGIN}>Already have a user?</Link>
+        <button onClick={this.onLogin}>Log in</button>
+        <Link to={URLS.SIGNUP}>Is it your first entry?</Link>
       </section>
     );
   }
 }
 
-Signup.propTypes = {
+Login.propTypes = {
   actions: PropTypes.object.isRequired
 };
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      signup: userActions.signup
+      login: userActions.login
     },
     dispatch
   )
@@ -63,4 +62,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   undefined,
   mapDispatchToProps
-)(Signup);
+)(Login);
