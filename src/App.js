@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  NavLink
-} from "react-router-dom";
+import { HashRouter as Router, Route, Switch, NavLink } from "react-router-dom";
 
 import "./assets/scss/app.scss";
 

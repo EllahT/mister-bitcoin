@@ -17,7 +17,6 @@ class Charts extends Component {
     ]);
   }
   render() {
-    console.log(this.props);
     return (
       <section className="charts-page">
         <h1>Charts</h1>
