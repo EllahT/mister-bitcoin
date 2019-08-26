@@ -16,7 +16,7 @@ let users = _load(USERSKEY) || [];
 
 function getLoggedUser() {
   const currUser = users.find(user => user._id === currUserId);
-  if (!currUser) Promise.reject("no logged in user");
+  if (!currUser) Promise.reject("no logged user");
   return Promise.resolve(currUser);
 }
 

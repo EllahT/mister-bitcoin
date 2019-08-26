@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ContactApp.scss";
+
+import contactsActions from "../../store/actions/contactsActions/contactsActions";
+import { URLS } from "../../utils/consts";
+
 import SearchBox from "../../components/SearchBox/SearchBox";
 import ContactList from "../../components/ContactList/ContactList";
-import contactsActions from "../../store/actions/contactsActions/contactsActions";
-import { bindActionCreators } from "redux";
-import { URLS } from "../../utils/consts";
 
 class ContactApp extends Component {
   componentDidMount() {
@@ -27,6 +30,9 @@ class ContactApp extends Component {
   };
 
   render() {
+    console.log(this.props.user);
+    if (!this.props.user) return <Redirect to={URLS.SIGNUP} />;
+
     return (
       <section className="contact-app">
         <div className="top-bar">
@@ -60,6 +66,7 @@ class ContactApp extends Component {
 ContactApp.propTypes = {
   isContactsLoaded: PropTypes.bool.isRequired,
   contacts: PropTypes.array.isRequired,
+  user: PropTypes.object,
   contactsSearchTerm: PropTypes.string,
   actions: PropTypes.object.isRequired
 };
@@ -72,7 +79,8 @@ const mapStateToProps = state => {
   return {
     isContactsLoaded: contacts !== null,
     contacts: contacts || [],
-    contactsSearchTerm: state.contacts.searchTerm
+    contactsSearchTerm: state.contacts.searchTerm,
+    user: state.user.user
   };
 };
 

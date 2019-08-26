@@ -6,8 +6,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  NavLink,
-  Redirect
+  NavLink
 } from "react-router-dom";
 
 import "./assets/scss/app.scss";
@@ -24,10 +23,6 @@ import ContactDetails from "./pages/ContactDetailsPage/ContactDetails";
 import ContactEdit from "./pages/ContactEditPage/ContactEdit";
 import Charts from "./pages/ChartsPage/ChartsPage";
 import { URLS } from "./utils/consts";
-
-const PrivateRoute = props => {
-  return props.user ? <Route {...props} /> : <Redirect to={URLS.SIGNUP} />;
-};
 
 class App extends Component {
   render() {
@@ -65,30 +60,22 @@ class App extends Component {
           </nav>
 
           <Switch>
-            <PrivateRoute path={URLS.HOME} exact component={HomePage} />
+            <Route path={URLS.HOME} exact component={HomePage} />
             <Route path={URLS.SIGNUP} exact component={SignupPage} />
             <Route path={URLS.LOGIN} exact component={LoginPage} />
-            <PrivateRoute
-              path={URLS.CONTACTS.LIST}
-              exact
-              component={ContactApp}
-            />
-            <PrivateRoute
-              path={URLS.CONTACTS.ADD}
-              key="add"
-              component={ContactEdit}
-            />
-            <PrivateRoute
+            <Route path={URLS.CONTACTS.LIST} exact component={ContactApp} />
+            <Route path={URLS.CONTACTS.ADD} key="add" component={ContactEdit} />
+            <Route
               path={URLS.CONTACTS.DETAILS}
               exact
               component={ContactDetails}
             />
-            <PrivateRoute
+            <Route
               path={URLS.CONTACTS.EDIT}
               key="edit"
               component={ContactEdit}
             />
-            <PrivateRoute path={URLS.CHARTS} component={Charts} />
+            <Route path={URLS.CHARTS} component={Charts} />
           </Switch>
         </div>
       </Router>

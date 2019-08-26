@@ -22,6 +22,7 @@ class Login extends Component {
       await this.props.actions.login(this.state.username);
       swal("Welcome!", "Successfully logged in!", "success");
       this.setState({ username: "" });
+      this.props.history.push(URLS.HOME);
     } catch (err) {
       swal("Had problems", err, "error");
     }
@@ -47,7 +48,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 const mapDispatchToProps = dispatch => ({
