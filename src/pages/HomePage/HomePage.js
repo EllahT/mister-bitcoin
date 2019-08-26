@@ -11,6 +11,8 @@ import bitcoinActions from "../../store/actions/bitcoinActions/bitcoinActions";
 import "./HomePage.scss";
 import { URLS } from "../../utils/consts";
 
+import TransactionList from "../../components/TransactionList/TransactionList";
+
 class HomePage extends Component {
   async componentDidMount() {
     try {
@@ -40,13 +42,12 @@ class HomePage extends Component {
         </header>
 
         {this.props.user && (
-          <main className="last-transcations">
-            <h1>Last transactions</h1>
-            <ul>
-              {this.props.user.transactions.map(transaction => (
-                <li>{JSON.stringify(transaction)}</li>
-              ))}
-            </ul>
+          <main>
+            <TransactionList
+              title="Last Transactions"
+              transactionList={this.props.user.transactions}
+              main={true}
+            />
           </main>
         )}
         {!this.props.user && (

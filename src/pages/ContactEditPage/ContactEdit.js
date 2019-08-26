@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import contactService from "../../services/contactService";
 
@@ -39,6 +39,8 @@ export default class ContactEdit extends Component {
   };
 
   render() {
+    if (!this.props.user) return <Redirect to={URLS.HOME} />;
+
     const { contact } = this.state;
     return (
       contact && (

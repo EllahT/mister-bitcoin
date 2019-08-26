@@ -1,5 +1,10 @@
 export default {
-  contacts: { contacts: null, filteredContacts: null, searchTerm: "" },
+  contacts: {
+    contacts: null,
+    filteredContacts: null,
+    searchTerm: "",
+    currContact: null
+  },
   users: { user: null },
   bitcoin: {
     currency: null,

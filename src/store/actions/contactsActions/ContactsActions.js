@@ -12,6 +12,11 @@ const _setContacts = (contacts, isFiltered) => ({
   isFiltered
 });
 
+const _setContact = contact => ({
+  type: types.SET_CONTACT,
+  contact
+});
+
 const loadContacts = (searchTerm = "") => {
   return async dispatch => {
     try {
@@ -35,7 +40,19 @@ const deleteContact = id => async dispatch => {
   }
 };
 
+const loadContactById = id => async dispatch => {
+  try {
+    dispatch(loadContacts());
+    const contact = await contactService.getContactById(id);
+    dispatch(_setContact(contact));
+    return;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export default {
   loadContacts,
-  deleteContact
+  deleteContact,
+  loadContactById
 };

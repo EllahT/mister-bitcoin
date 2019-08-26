@@ -52,12 +52,13 @@ function createTransaction(contact, amount) {
   const transaction = {
     toId: contact._id,
     to: contact.name,
-    at: new Date(),
+    at: new Date().getTime(),
     amount
   };
   const currUser = users.find(user => user._id === currUserId);
   const currUserIdx = users.findIndex(user => user._id === currUserId);
   currUser.transactions.push(transaction);
+  currUser.coins = currUser.coins - transaction.amount;
   users.splice(currUserIdx, 1, currUser);
   saveUsers();
   return Promise.resolve(currUser);

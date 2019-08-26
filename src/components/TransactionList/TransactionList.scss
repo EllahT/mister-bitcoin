@@ -1,0 +1,25 @@
+@import "../../assets/scss/colors.scss";
+
+.transactions-container {
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+
+  .transaction-list {
+    display: flex;
+    flex-direction: column;
+
+    .transaction-item {
+      padding: 0 10px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-grow: 1;
+      justify-content: space-between;
+      background-color: $brand-background;
+
+      &:hover {
+        background-color: lighten($brand-background, 6%);
+      }
+    }
+  }
+}

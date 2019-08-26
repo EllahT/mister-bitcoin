@@ -19,6 +19,9 @@ export default (state = initialState.contacts, action) => {
     case types.SET_CONTACTS_SEARCH_TERM:
       return { ...state, searchTerm: action.searchTerm };
 
+    case types.SET_CONTACT:
+      return { ...state, currContact: action.contact };
+
     default:
       return state;
   }

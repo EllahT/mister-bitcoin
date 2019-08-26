@@ -23,4 +23,9 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-serviceWorker.unregister();
+serviceWorker.register();
+
+window.addEventListener("beforeinstallprompt", e => {
+  console.log("beforeinstallprompt event has fired");
+  e.prompt();
+});

@@ -1,6 +1,11 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import contactService from "../../services/contactService";
+import contactActions from "../../store/actions/contactsActions/contactsActions";
+import userActions from "../../store/actions/userActions/userActions";
 
 import "./ContactDetails.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,32 +13,56 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { URLS } from "../../utils/consts";
 import utils from "../../utils/utils";
-export default class ContactDetails extends Component {
+
+import TransactionList from "../../components/TransactionList/TransactionList";
+import TransactionForm from "../../components/TransactionForm/TransactionForm";
+
+class ContactDetails extends Component {
   state = {
-    contact: null
+    showForm: false
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const { id } = this.props.match.params;
-    const contact = await contactService.getContactById(id);
-    this.setState({ contact });
+    this.props.actions.loadContactById(id);
   }
 
   onDelete = async () => {
-    await contactService.deleteContact(this.state.contact.id);
+    await this.props.actions.deleteContact(this.props.contact.id);
     this.props.history.push(URLS.CONTACTS.LIST);
   };
 
+  onTransferCoins = amount => {
+    this.toggleShowTransferForm();
+    this.props.actions.createTransaction(this.props.contact, amount);
+  };
+
+  toggleShowTransferForm = () => {
+    this.setState({ showForm: !this.state.showForm });
+  };
+
+  filterTransactions = () => {
+    const contactTransactions = this.props.user.transactions.filter(
+      t => t.toId === this.props.contact._id
+    );
+    return contactTransactions;
+  };
+
   render() {
-    const { contact } = this.state;
+    if (!this.props.user) return <Redirect to={URLS.HOME} />;
+
     return (
-      contact && (
+      this.props.contact && (
         <section className="contact-details">
           <div className="actions">
             <Link to={URLS.CONTACTS.LIST}>
               <FontAwesomeIcon icon="chevron-left" />
             </Link>
-            <Link to={utils.formatURL(URLS.CONTACTS.EDIT, { id: contact._id })}>
+            <Link
+              to={utils.formatURL(URLS.CONTACTS.EDIT, {
+                id: this.props.contact._id
+              })}
+            >
               <FontAwesomeIcon icon="edit" />
             </Link>
             <button
@@ -45,19 +74,58 @@ export default class ContactDetails extends Component {
               <FontAwesomeIcon icon="trash" />
             </button>
           </div>
-          <h1> {contact.name}</h1>
+          <h1> {this.props.contact.name}</h1>
           <img
-            src={`https://robohash.org/${contact._id}?set=set5`}
+            src={`https://robohash.org/${this.props.contact._id}?set=set5`}
             alt="contact"
           />
           <h4>
-            <FontAwesomeIcon icon="at" /> {contact.email}
+            <FontAwesomeIcon icon="at" /> {this.props.contact.email}
           </h4>
           <h4>
-            <FontAwesomeIcon icon="phone" /> {contact.phone}
+            <FontAwesomeIcon icon="phone" /> {this.props.contact.phone}
           </h4>
+          <button onClick={this.toggleShowTransferForm}>Transfer Coins</button>
+          {this.state.showForm && (
+            <TransactionForm
+              onTransferCoins={this.onTransferCoins}
+              currCoins={100}
+            />
+          )}
+          <TransactionList
+            title={`Last Transactions To ${this.props.contact.name}`}
+            transactionList={this.filterTransactions()}
+            main={false}
+          />
         </section>
       )
     );
   }
 }
+const mapStateToProps = state => ({
+  contact: state.contacts.currContact,
+  user: state.user.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      loadContactById: contactActions.loadContactById,
+      createTransaction: userActions.createTransaction,
+      deleteContact: contactActions.deleteContact
+    },
+    dispatch
+  )
+});
+
+ContactDetails.propTypes = {
+  contact: PropTypes.object,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactDetails);

@@ -26,12 +26,10 @@ class ContactApp extends Component {
 
   onContactDelete = async id => {
     await this.props.actions.deleteContact(id);
-    console.log(this.props.contacts);
   };
 
   render() {
-    console.log(this.props.user);
-    if (!this.props.user) return <Redirect to={URLS.SIGNUP} />;
+    if (!this.props.user) return <Redirect to={URLS.HOME} />;
 
     return (
       <section className="contact-app">
