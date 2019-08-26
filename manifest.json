@@ -17,7 +17,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": "./mister-bitcoin/index.html",
   "display": "standalone",
   "theme_color": "#5893d4",
   "background_color": "#070d59",
