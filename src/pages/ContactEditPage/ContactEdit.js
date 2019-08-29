@@ -14,10 +14,6 @@ class ContactEdit extends Component {
   state = {
     contact: null
   };
-  onDelete = async () => {
-    await this.props.actions.deleteContact(this.props.contact._id);
-    this.props.history.push(URLS.CONTACTS.LIST);
-  };
 
   async componentDidMount() {
     const { id } = this.props.match.params;
@@ -26,6 +22,11 @@ class ContactEdit extends Component {
       this.setState({ contact: this.props.contact });
     } else this.setState({ contact: { name: "", email: "", phone: "" } });
   }
+
+  onDelete = async () => {
+    await this.props.actions.deleteContact(this.props.contact._id);
+    this.props.history.push(URLS.CONTACTS.LIST);
+  };
 
   handleChange = e => {
     const newState = { ...this.state.contact };
