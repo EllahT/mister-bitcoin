@@ -51,8 +51,18 @@ const loadContactById = id => async dispatch => {
   }
 };
 
+const saveContact = contact => async dispatch => {
+  try {
+    await contactService.saveContact(contact);
+    dispatch({ type: types.SAVE_CONTACT, contact });
+  } catch (err) {
+    throw err;
+  }
+};
+
 export default {
   loadContacts,
   deleteContact,
-  loadContactById
+  loadContactById,
+  saveContact
 };

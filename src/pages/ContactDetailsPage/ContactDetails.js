@@ -28,7 +28,7 @@ class ContactDetails extends Component {
   }
 
   onDelete = async () => {
-    await this.props.actions.deleteContact(this.props.contact.id);
+    await this.props.actions.deleteContact(this.props.contact._id);
     this.props.history.push(URLS.CONTACTS.LIST);
   };
 

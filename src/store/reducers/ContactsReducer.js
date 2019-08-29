@@ -22,6 +22,14 @@ export default (state = initialState.contacts, action) => {
     case types.SET_CONTACT:
       return { ...state, currContact: action.contact };
 
+    case types.SAVE_CONTACT:
+      let updatedContacts = action.contact._id
+        ? state.contacts.filter(contact =>
+            contact._id !== action.contact._id ? contact : action.contact
+          )
+        : [...state.contacts, action.contact];
+      return { ...state, contacts: updatedContacts };
+
     default:
       return state;
   }

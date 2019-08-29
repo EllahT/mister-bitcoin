@@ -4,8 +4,7 @@ export default {
   getContacts,
   getContactById,
   deleteContact,
-  saveContact,
-  getEmptyContact
+  saveContact
 };
 
 const contacts = [
@@ -170,6 +169,7 @@ function deleteContact(id) {
 }
 
 function _updateContact(contact) {
+  console.log("got into edit contact with:", contact);
   return new Promise((resolve, reject) => {
     const index = contacts.findIndex(c => contact._id === c._id);
     if (index !== -1) {
@@ -180,6 +180,7 @@ function _updateContact(contact) {
 }
 
 function _addContact(contact) {
+  console.log("got into add contact with:", contact);
   return new Promise((resolve, reject) => {
     contact._id = utilService.makeId();
     contacts.push(contact);
@@ -189,14 +190,6 @@ function _addContact(contact) {
 
 function saveContact(contact) {
   return contact._id ? _updateContact(contact) : _addContact(contact);
-}
-
-function getEmptyContact() {
-  return {
-    name: "",
-    email: "",
-    phone: ""
-  };
 }
 
 function filter(term) {

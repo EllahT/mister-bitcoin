@@ -1,28 +1,30 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import contactService from "../../services/contactService";
+import contactActions from "../../store/actions/contactsActions/contactsActions";
 
 import "./ContactEdit.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { URLS } from "../../utils/consts";
 
-export default class ContactEdit extends Component {
+class ContactEdit extends Component {
   state = {
     contact: null
   };
-
   onDelete = async () => {
-    await contactService.deleteContact(this.state.contact.id);
+    await this.props.actions.deleteContact(this.props.contact._id);
     this.props.history.push(URLS.CONTACTS.LIST);
   };
 
   async componentDidMount() {
     const { id } = this.props.match.params;
     if (id) {
-      const contact = await contactService.getContactById(id);
-      this.setState({ contact });
-    } else this.setState({ contact: contactService.getEmptyContact() });
+      await this.props.actions.loadContactById(id);
+      this.setState({ contact: this.props.contact });
+    } else this.setState({ contact: { name: "", email: "", phone: "" } });
   }
 
   handleChange = e => {
@@ -33,7 +35,7 @@ export default class ContactEdit extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    await contactService.saveContact(this.state.contact);
+    await this.props.actions.saveContact(this.state.contact);
     const { history } = this.props;
     history.push(URLS.CONTACTS.LIST);
   };
@@ -41,9 +43,8 @@ export default class ContactEdit extends Component {
   render() {
     if (!this.props.user) return <Redirect to={URLS.HOME} />;
 
-    const { contact } = this.state;
     return (
-      contact && (
+      this.state.contact && (
         <section className="contact-edit">
           <div className="actions">
             <Link to={URLS.CONTACTS.LIST}>
@@ -95,3 +96,29 @@ export default class ContactEdit extends Component {
     );
   }
 }
+
+ContactEdit.propTypes = {
+  actions: PropTypes.object.isRequired,
+  contact: PropTypes.object
+};
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    {
+      saveContact: contactActions.saveContact,
+      loadContactById: contactActions.loadContactById,
+      deleteContact: contactActions.deleteContact
+    },
+    dispatch
+  )
+});
+
+const mapStateToProps = state => ({
+  contact: state.contacts.currContact,
+  user: state.user.user
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactEdit);
